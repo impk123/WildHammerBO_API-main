@@ -1,0 +1,145 @@
+{
+    "1": {
+        "strKey": "finish_game_leves",
+        "name": "ผ่านด่านหลักที่กำหนด",
+        "datatype": 1,
+        "triggertype": 0,
+        "isfinish": 1,
+        "act": [
+            2
+        ]
+    },
+    "2": {
+        "strKey": "ebox_count",
+        "name": "ตีบวกอุปกรณ์ตามจำนวนครั้งที่กำหนด",
+        "datatype": 0,
+        "triggertype": 0,
+        "isfinish": 1,
+        "act": [
+            16
+        ]
+    },
+    "3": {
+        "strKey": "total_ebox_count",
+        "name": "ตีบวกอุปกรณ์สะสมตามจำนวนครั้งที่กำหนด",
+        "datatype": 0,
+        "triggertype": 1,
+        "isfinish": 1,
+        "act": [
+            16
+        ]
+    },
+    "4": {
+        "strKey": "sbox_count",
+        "name": "เปิดกล่องสมบัติสกิลตามจำนวนครั้งที่กำหนด",
+        "datatype": 0,
+        "triggertype": 0,
+        "isfinish": 1,
+        "act": [
+            20
+        ]
+    },
+    "5": {
+        "strKey": "total_sbox_count",
+        "name": "เปิดกล่องสมบัติสกิลสะสมตามจำนวนครั้งที่กำหนด",
+        "datatype": 0,
+        "triggertype": 1,
+        "isfinish": 1,
+        "act": [
+            20
+        ]
+    },
+    "6": {
+        "strKey": "equip_posup",
+        "name": "จำนวนครั้งที่เสริมแกร่งอุปกรณ์",
+        "datatype": 0,
+        "triggertype": 0,
+        "isfinish": 1,
+        "act": [
+            13,
+            14
+        ]
+    },
+    "7": {
+        "strKey": "total_equip_posup",
+        "name": "จำนวนครั้งที่เสริมแกร่งอุปกรณ์สะสม",
+        "datatype": 0,
+        "triggertype": 1,
+        "isfinish": 1,
+        "act": [
+            13,
+            14
+        ]
+    },
+    "8": {
+        "strKey": "finish_elite_leves",
+        "name": "ผ่านด่านชั้นยอดที่กำหนด",
+        "datatype": 2,
+        "triggertype": 0,
+        "isfinish": 1,
+        "act": [
+            31
+        ]
+    },
+    "9": {
+        "strKey": "time_award_count",
+        "name": "จำนวนครั้งที่รับรางวัล AFK",
+        "datatype": 0,
+        "triggertype": 0,
+        "isfinish": 1,
+        "act": [
+            29
+        ]
+    },
+    "10": {
+        "strKey": "time_award_qcount",
+        "name": "จำนวนครั้งที่รับรางวัล AFK ด่วน",
+        "datatype": 0,
+        "triggertype": 0,
+        "isfinish": 1,
+        "act": [
+            30
+        ]
+    },
+    "11": {
+        "strKey": "hero_lvup_count",
+        "name": "จำนวนครั้งที่อัปเกรดฮีโร่",
+        "datatype": 0,
+        "triggertype": 0,
+        "isfinish": 1,
+        "act": [
+            15
+        ]
+    },
+    "12": {
+        "strKey": "fight_game_leves",
+        "name": "จำนวนครั้งที่ท้าทายด่านหลัก",
+        "datatype": 0,
+        "triggertype": 0,
+        "isfinish": 0,
+        "act": [
+            2
+        ]
+    },
+    "13": {
+        "strKey": "skill_lvup_conut",
+        "name": "จำนวนครั้งที่อัปเกรดสกิล",
+        "datatype": 0,
+        "triggertype": 0,
+        "isfinish": 1,
+        "act": [
+            4,
+            5
+        ]
+    },
+    "14": {
+        "strKey": "reached_ebox_lv",
+        "name": "ระดับการตีบวกถึงเลเวลที่กำหนดหรือสูงกว่า",
+        "datatype": 3,
+        "triggertype": 0,
+        "isfinish": 1,
+        "act": [
+            19
+        ]
+    }
+}

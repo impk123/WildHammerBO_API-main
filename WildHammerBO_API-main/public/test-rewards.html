@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Rewards System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .reward-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+        .reward-card img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 4px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .redeem-form {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>🎁 Test Rewards System</h1>
+    
+    <div class="container">
+        <h2>📋 Active Rewards</h2>
+        <button onclick="loadActiveRewards()">Load Active Rewards</button>
+        <div id="rewardsList"></div>
+    </div>
+
+    <div class="container">
+        <h2>🛒 Redeem Reward</h2>
+        <div class="redeem-form">
+            <input type="number" id="rewardId" placeholder="Reward ID" required>
+            <input type="text" id="gameToken" placeholder="Game Token (JWT)" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <textarea id="shippingAddress" placeholder="Shipping Address" required></textarea>
+            <button onclick="redeemReward()">Redeem Reward</button>
+        </div>
+        <div id="redeemResult"></div>
+    </div>
+
+    <div class="container">
+        <h2>📊 User Redemption History</h2>
+        <div class="redeem-form">
+            <input type="text" id="historyToken" placeholder="Game Token (JWT)" required>
+            <button onclick="loadUserRedemptions()">Load History</button>
+        </div>
+        <div id="redemptionHistory"></div>
+    </div>
+
+    <div class="container">
+        <h2>👑 Admin Functions</h2>
+        <button onclick="loadAllRewards()">Load All Rewards (Admin)</button>
+        <button onclick="loadAllRedemptions()">Load All Redemptions (Admin)</button>
+        <button onclick="loadStatistics()">Load Statistics (Admin)</button>
+        <div id="adminResults"></div>
+    </div>
+
+    <div class="container">
+        <h2>➕ Create New Reward (Admin)</h2>
+        <div class="redeem-form">
+            <input type="text" id="newRewardName" placeholder="Reward Name" required>
+            <input type="url" id="newRewardImage" placeholder="Image URL" required>
+            <input type="number" id="newRewardCost" placeholder="Token Cost" required>
+            <textarea id="newRewardDescription" placeholder="Description"></textarea>
+            <input type="number" id="newRewardStock" placeholder="Stock Quantity (-1 for unlimited)" value="-1">
+            <button onclick="createReward()">Create Reward</button>
+        </div>
+        <div id="createResult"></div>
+    </div>
+
+    <script>
+        const API_BASE = '/api/rewards';
+        
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        async function loadActiveRewards() {
+            try {
+                showStatus('rewardsList', 'Loading...', 'info');
+                const response = await fetch(`${API_BASE}/active`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    let html = '<h3>Available Rewards:</h3>';
+                    data.data.forEach(reward => {
+                        html += `
+                            <div class="reward-card">
+                                <h4>${reward.name}</h4>
+                                <img src="${reward.image_url}" alt="${reward.name}">
+                                <p><strong>Token Cost:</strong> ${reward.token_cost}</p>
+                                <p><strong>Description:</strong> ${reward.description || 'No description'}</p>
+                                <p><strong>Stock:</strong> ${reward.stock_quantity === -1 ? 'Unlimited' : reward.stock_quantity}</p>
+                                <p><strong>Status:</strong> ${reward.is_active ? 'Active' : 'Inactive'}</p>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('rewardsList').innerHTML = html;
+                } else {
+                    showStatus('rewardsList', `Error: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showStatus('rewardsList', `Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function redeemReward() {
+            const rewardId = document.getElementById('rewardId').value;
+            const email = document.getElementById('email').value;
+            const shippingAddress = document.getElementById('shippingAddress').value;
+            const token = document.getElementById('gameToken').value;
+
+            if (!rewardId || !email || !shippingAddress || !token) {
+                showStatus('redeemResult', 'Please fill in all fields including game token', 'error');
+                return;
+            }
+
+            try {
+                showStatus('redeemResult', 'Processing redemption...', 'info');
+                const response = await fetch(`${API_BASE}/redeem`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        reward_id: parseInt(rewardId),
+                        email,
+                        shipping_address: shippingAddress,
+                        token: token
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus('redeemResult', 
+                        `✅ Redemption successful!<br>
+                        Redemption ID: ${data.data.redemption_id}<br>
+                        New Balance: ${data.data.new_balance}<br>
+                        Reward: ${data.data.reward_name}`, 'success');
+                } else {
+                    showStatus('redeemResult', `❌ Error: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showStatus('redeemResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadUserRedemptions() {
+            const token = document.getElementById('historyToken').value;
+
+            if (!token) {
+                showStatus('redemptionHistory', 'Please enter game token', 'error');
+                return;
+            }
+
+            try {
+                showStatus('redemptionHistory', 'Loading...', 'info');
+                const response = await fetch(`${API_BASE}/redemptions/user?token=${encodeURIComponent(token)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    let html = '<h3>Redemption History:</h3>';
+                    if (data.data.length === 0) {
+                        html += '<p>No redemptions found</p>';
+                    } else {
+                        data.data.forEach(redemption => {
+                            html += `
+                                <div class="reward-card">
+                                    <h4>${redemption.reward_name}</h4>
+                                    <p><strong>Token Cost:</strong> ${redemption.token_cost}</p>
+                                    <p><strong>Status:</strong> ${redemption.status}</p>
+                                    <p><strong>Email:</strong> ${redemption.email}</p>
+                                    <p><strong>Address:</strong> ${redemption.shipping_address}</p>
+                                    <p><strong>Date:</strong> ${new Date(redemption.created_at).toLocaleString()}</p>
+                                </div>
+                            `;
+                        });
+                    }
+                    document.getElementById('redemptionHistory').innerHTML = html;
+                } else {
+                    showStatus('redemptionHistory', `Error: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showStatus('redemptionHistory', `Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadAllRewards() {
+            try {
+                showStatus('adminResults', 'Loading...', 'info');
+                const response = await fetch(`${API_BASE}/`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    let html = '<h3>All Rewards (Admin):</h3>';
+                    data.data.forEach(reward => {
+                        html += `
+                            <div class="reward-card">
+                                <h4>${reward.name} (ID: ${reward.id})</h4>
+                                <img src="${reward.image_url}" alt="${reward.name}">
+                                <p><strong>Token Cost:</strong> ${reward.token_cost}</p>
+                                <p><strong>Stock:</strong> ${reward.stock_quantity === -1 ? 'Unlimited' : reward.stock_quantity}</p>
+                                <p><strong>Status:</strong> ${reward.is_active ? 'Active' : 'Inactive'}</p>
+                                <p><strong>Created:</strong> ${new Date(reward.created_at).toLocaleString()}</p>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('adminResults').innerHTML = html;
+                } else {
+                    showStatus('adminResults', `Error: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showStatus('adminResults', `Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadAllRedemptions() {
+            try {
+                showStatus('adminResults', 'Loading...', 'info');
+                const response = await fetch(`${API_BASE}/redemptions/all`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    let html = '<h3>All Redemptions (Admin):</h3>';
+                    if (data.data.length === 0) {
+                        html += '<p>No redemptions found</p>';
+                    } else {
+                        data.data.forEach(redemption => {
+                            html += `
+                                <div class="reward-card">
+                                    <h4>${redemption.reward_name} (ID: ${redemption.id})</h4>
+                                    <p><strong>User:</strong> ${redemption.user_id} (Server: ${redemption.server_id})</p>
+                                    <p><strong>Token Cost:</strong> ${redemption.token_cost}</p>
+                                    <p><strong>Status:</strong> ${redemption.status}</p>
+                                    <p><strong>Email:</strong> ${redemption.email}</p>
+                                    <p><strong>Date:</strong> ${new Date(redemption.created_at).toLocaleString()}</p>
+                                </div>
+                            `;
+                        });
+                    }
+                    document.getElementById('adminResults').innerHTML = html;
+                } else {
+                    showStatus('adminResults', `Error: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showStatus('adminResults', `Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadStatistics() {
+            try {
+                showStatus('adminResults', 'Loading...', 'info');
+                const response = await fetch(`${API_BASE}/redemptions/statistics`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const stats = data.data;
+                    let html = `
+                        <h3>Redemption Statistics:</h3>
+                        <div class="reward-card">
+                            <p><strong>Total Redemptions:</strong> ${stats.total_redemptions}</p>
+                            <p><strong>Total Tokens Used:</strong> ${stats.total_tokens_used}</p>
+                            <p><strong>Pending:</strong> ${stats.pending_count}</p>
+                            <p><strong>Processing:</strong> ${stats.processing_count}</p>
+                            <p><strong>Shipped:</strong> ${stats.shipped_count}</p>
+                            <p><strong>Delivered:</strong> ${stats.delivered_count}</p>
+                            <p><strong>Cancelled:</strong> ${stats.cancelled_count}</p>
+                        </div>
+                    `;
+                    document.getElementById('adminResults').innerHTML = html;
+                } else {
+                    showStatus('adminResults', `Error: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showStatus('adminResults', `Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function createReward() {
+            const name = document.getElementById('newRewardName').value;
+            const imageUrl = document.getElementById('newRewardImage').value;
+            const cost = document.getElementById('newRewardCost').value;
+            const description = document.getElementById('newRewardDescription').value;
+            const stock = document.getElementById('newRewardStock').value;
+
+            if (!name || !imageUrl || !cost) {
+                showStatus('createResult', 'Please fill in required fields (Name, Image URL, Token Cost)', 'error');
+                return;
+            }
+
+            try {
+                showStatus('createResult', 'Creating reward...', 'info');
+                const response = await fetch(`${API_BASE}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        name,
+                        image_url: imageUrl,
+                        token_cost: parseInt(cost),
+                        description,
+                        stock_quantity: parseInt(stock) || -1
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus('createResult', 
+                        `✅ Reward created successfully!<br>
+                        ID: ${data.data.id}<br>
+                        Name: ${data.data.name}<br>
+                        Token Cost: ${data.data.token_cost}`, 'success');
+                    
+                    // Clear form
+                    document.getElementById('newRewardName').value = '';
+                    document.getElementById('newRewardImage').value = '';
+                    document.getElementById('newRewardCost').value = '';
+                    document.getElementById('newRewardDescription').value = '';
+                    document.getElementById('newRewardStock').value = '-1';
+                } else {
+                    showStatus('createResult', `❌ Error: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showStatus('createResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Load active rewards on page load
+        window.onload = function() {
+            loadActiveRewards();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{
+    "1": {
+        "name": "ทั่วไป",
+        "bg": "img_zbtb_1",
+        "color": "a69a7f",
+        "datie_times": [
+            1
+        ],
+        "rate": 0
+    },
+    "2": {
+        "name": "ยอดเยี่ยม",
+        "bg": "img_zbtb_2",
+        "color": "9bc257",
+        "datie_times": [
+            2
+        ],
+        "rate": 800
+    },
+    "3": {
+        "name": "ประณีต",
+        "bg": "img_zbtb_4",
+        "color": "777cb1",
+        "datie_times": [
+            1,
+            3
+        ],
+        "rate": 1200
+    },
+    "4": {
+        "name": "หายาก",
+        "bg": "img_zbtb_5",
+        "color": "9956a6",
+        "datie_times": [
+            1,
+            4
+        ],
+        "rate": 1800
+    },
+    "5": {
+        "name": "มหากาพย์",
+        "bg": "img_zbtb_7",
+        "color": "d9aa33",
+        "datie_times": [
+            1,
+            5
+        ],
+        "rate": 2300
+    },
+    "6": {
+        "name": "ในตำนาน",
+        "bg": "img_zbtb_8",
+        "color": "d17a24",
+        "datie_times": [
+            1,
+            4,
+            6
+        ],
+        "rate": 2800
+    },
+    "7": {
+        "name": "เทพนิยาย",
+        "bg": "img_zbtb_9",
+        "color": "ce4f33",
+        "datie_times": [
+            1,
+            5,
+            7
+        ],
+        "rate": 3300
+    },
+    "8": {
+        "name": "สวรรค์ลงทัณฑ์",
+        "bg": "img_zbtb_3",
+        "color": "4eb1c2",
+        "datie_times": [
+            1,
+            6,
+            8
+        ],
+        "rate": 4300
+    },
+    "9": {
+        "name": "ทำลายล้างโลก",
+        "bg": "img_zbtb_6",
+        "color": "d85577",
+        "datie_times": [
+            3,
+            5,
+            7,
+            9
+        ],
+        "rate": 5300
+    }
+}

@@ -1,0 +1,9 @@
+# Database files to ignore
+*.log
+*.tmp
+backups/
+dumps/
+
+# Environment specific configs
+local.env
+production.env

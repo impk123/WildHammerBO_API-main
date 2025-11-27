@@ -1,0 +1,167 @@
+{
+  "6001": {
+    "name": "วายุสีม่วง",
+    "resid": 11,
+    "quality": 2,
+    "time": 0,
+    "hp_rate": 200,
+    "atk_rate": 200,
+    "def_rate": 200,
+    "group": 1,
+    "source": "เปิดใช้งานจากการเติมเงินครั้งแรก"
+  },
+  "6002": {
+    "name": "อัศวินหลวง",
+    "resid": 12,
+    "quality": 3,
+    "time": 0,
+    "hp_rate": 400,
+    "atk_rate": 400,
+    "def_rate": 400,
+    "group": 1,
+    "source": "เปิดใช้งานจากกิจกรรม"
+  },
+  "6003": {
+    "name": "ลมหายใจแห่งสายลม",
+    "resid": 13,
+    "quality": 4,
+    "time": 0,
+    "hp_rate": 600,
+    "atk_rate": 600,
+    "def_rate": 600,
+    "group": 1,
+    "source": "เปิดใช้งานจากกิจกรรม"
+  },
+  "6004": {
+    "name": "หัวหน้าอัศวิน",
+    "resid": 14,
+    "quality": 4,
+    "time": 0,
+    "hp_rate": 800,
+    "atk_rate": 800,
+    "def_rate": 800,
+    "group": 1,
+    "source": "เปิดใช้งานจากกิจกรรม"
+  },
+  "6005": {
+    "name": "ดาบแห่งการตัดสิน",
+    "resid": 15,
+    "quality": 5,
+    "time": 0,
+    "hp_rate": 1000,
+    "atk_rate": 1000,
+    "def_rate": 1000,
+    "group": 1,
+    "source": "เปิดใช้งานจากกิจกรรม"
+  },
+  "6011": {
+    "name": "ทหารรับจ้างจู่โจม",
+    "resid": 31,
+    "quality": 2,
+    "time": 0,
+    "hp_rate": 200,
+    "atk_rate": 200,
+    "def_rate": 200,
+    "group": 2,
+    "source": "ได้รับจากรางวัลของขวัญประจำวัน"
+  },
+  "6012": {
+    "name": "ปาร์ตี้สุดอินเทรนด์",
+    "resid": 32,
+    "quality": 3,
+    "time": 0,
+    "hp_rate": 400,
+    "atk_rate": 400,
+    "def_rate": 400,
+    "group": 2,
+    "source": "ได้รับจากรางวัลเติมเงินสะสมขั้นที่ 1"
+  },
+  "6013": {
+    "name": "เพลิงสงครามพังก์",
+    "resid": 33,
+    "quality": 3,
+    "time": 0,
+    "hp_rate": 600,
+    "atk_rate": 600,
+    "def_rate": 600,
+    "group": 2,
+    "source": "เปิดใช้งานจากกิจกรรม"
+  },
+  "6014": {
+    "name": "จู่โจมไร้ร่องรอย",
+    "resid": 34,
+    "quality": 4,
+    "time": 0,
+    "hp_rate": 800,
+    "atk_rate": 800,
+    "def_rate": 800,
+    "group": 2,
+    "source": "เปิดใช้งานจากกิจกรรม"
+  },
+  "6015": {
+    "name": "สุดยอดนักสู้",
+    "resid": 35,
+    "quality": 5,
+    "time": 0,
+    "hp_rate": 1000,
+    "atk_rate": 1000,
+    "def_rate": 1000,
+    "group": 2,
+    "source": "ได้รับจากสวัสดิการเปิดเซิร์ฟเวอร์"
+  },
+  "6021": {
+    "name": "มหาปุโรหิต",
+    "resid": 21,
+    "quality": 2,
+    "time": 0,
+    "hp_rate": 200,
+    "atk_rate": 200,
+    "def_rate": 200,
+    "group": 3,
+    "source": "ได้รับจากรางวัลเติมเงินสะสมขั้นที่ 3"
+  },
+  "6022": {
+    "name": "เส้นทางสีเทา",
+    "resid": 22,
+    "quality": 3,
+    "time": 0,
+    "hp_rate": 400,
+    "atk_rate": 400,
+    "def_rate": 400,
+    "group": 3,
+    "source": "เปิดใช้งานจากกิจกรรม"
+  },
+  "6023": {
+    "name": "ปีแห่งความเงียบสงัด",
+    "resid": 23,
+    "quality": 3,
+    "time": 0,
+    "hp_rate": 600,
+    "atk_rate": 600,
+    "def_rate": 600,
+    "group": 3,
+    "source": "เปิดใช้งานจากกิจกรรม"
+  },
+  "6024": {
+    "name": "นักบวชหลวง",
+    "resid": 24,
+    "quality": 4,
+    "time": 0,
+    "hp_rate": 800,
+    "atk_rate": 800,
+    "def_rate": 800,
+    "group": 3,
+    "source": "เปิดใช้งานจากกิจกรรม"
+  },
+  "6025": {
+    "name": "ลอรี่แห่งความมืด",
+    "resid": 25,
+    "quality": 5,
+    "time": 0,
+    "hp_rate": 1000,
+    "atk_rate": 1000,
+    "def_rate": 1000,
+    "group": 3,
+    "source": "เปิดใช้งานจากกิจกรรม"
+  }
+}

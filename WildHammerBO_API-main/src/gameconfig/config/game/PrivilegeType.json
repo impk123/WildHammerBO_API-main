@@ -1,0 +1,32 @@
+{
+    "1": {
+        "strKey": "free_advertising",
+        "name": "ไม่มีโฆษณา",
+        "cptype": 1
+    },
+    "2": {
+        "strKey": "shop_add_daily_num",
+        "name": "เพิ่มขีดจำกัดการซื้อรายวันในร้านค้า",
+        "cptype": 0
+    },
+    "3": {
+        "strKey": "timeaward_quickcount",
+        "name": "จำนวนครั้งการ AFK ด่วนรายวัน",
+        "cptype": 0
+    },
+    "4": {
+        "strKey": "add_item_bonus",
+        "name": "โบนัสไอเทม",
+        "cptype": 0
+    },
+    "5": {
+        "strKey": "add_exp_bonus",
+        "name": "โบนัสค่าประสบการณ์",
+        "cptype": 0
+    },
+    "6": {
+        "strKey": "add_item",
+        "name": "รับไอเทม",
+        "cptype": 0
+    }
+}

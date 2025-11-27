@@ -1,0 +1,38 @@
+{
+    "1": {
+        "strKey": "weapon",
+        "name": "อาวุธ",
+        "bg": "img_wuqi",
+        "iconFmt": "wuqi/"
+    },
+    "2": {
+        "strKey": "cloth",
+        "name": "เสื้อผ้า",
+        "bg": "img_yifu",
+        "iconFmt": "yifu/"
+    },
+    "3": {
+        "strKey": "hat",
+        "name": "หมวก",
+        "bg": "img_maozi",
+        "iconFmt": "maozi/"
+    },
+    "4": {
+        "strKey": "belt",
+        "name": "แหวน",
+        "bg": "img_shoutao",
+        "iconFmt": "jiezhi/"
+    },
+    "5": {
+        "strKey": "pants",
+        "name": "กางเกง",
+        "bg": "img_kuzi",
+        "iconFmt": "kuzi/"
+    },
+    "6": {
+        "strKey": "shoe",
+        "name": "รองเท้า",
+        "bg": "img_xiezi",
+        "iconFmt": "xiezi/"
+    }
+}

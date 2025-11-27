@@ -1,0 +1,44 @@
+{
+  "name": "idlegame-admin-backend",
+  "version": "1.0.0",
+  "description": "Backend for Idle Game Admin System with Optional Redis",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --exec \"node -r dotenv/config index.js\"",
+    "dev:no-redis": "REDIS_DISABLED=true nodemon index.js",
+    "test": "node tests/test-ban-system.js",
+    "test:gift-codes": "node tests/test-gift-code-data.js",
+    "test:no-redis": "node tests/test-without-redis.js",
+    "test:redis": "node scripts/test-redis.js",
+    "test:gameranks": "node scripts/test-gameranks.js",
+    "test:simple": "node tests/simple-test.js",
+    "test:quick-ban": "node tests/quick-ban-test.js",
+    "test:all": "npm run test && npm run test:gift-codes && npm run test:no-redis",
+    "setup:db": "node database/scripts/setup_database.js",
+    "setup:gift-codes": "node database/scripts/add-gift-code-data.js",
+    "db:check": "node database/scripts/check_tables.js",
+    "db:backup": "node database/scripts/backup.js",
+    "admin:create": "node scripts/create-admin.js",
+    "admin:setup": "node scripts/setup-admin.js"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "debug": "^4.4.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.3",
+    "redis": "^4.7.0",
+    "stripe": "^18.5.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

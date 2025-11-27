@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Package System Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #666;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .package-card {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            background: #fafafa;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .package-card:hover {
+            border-color: #007bff;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+        }
+
+        .package-card.popular {
+            border-color: #ffc107;
+            background: linear-gradient(135deg, #fff9e6, #fff);
+        }
+
+        .package-card.popular::before {
+            content: "🌟 POPULAR";
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: #ffc107;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .package-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .package-price {
+            font-size: 24px;
+            color: #28a745;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .package-description {
+            color: #666;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .package-rewards {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .reward-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+
+        .package-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .category-tag {
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+
+        .category-tag.starter {
+            background: #28a745;
+        }
+
+        .category-tag.popular {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .category-tag.premium {
+            background: #6f42c1;
+        }
+
+        .category-tag.mega {
+            background: #dc3545;
+        }
+
+        .category-tag.special {
+            background: #fd7e14;
+        }
+
+        .category-tag.limited {
+            background: #e83e8c;
+        }
+
+        .purchase-btn {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .purchase-btn:hover {
+            background: #0056b3;
+        }
+
+        .purchase-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .filters {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        select,
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        .purchase-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #007bff;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .test-section {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .transaction-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .transaction-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>💳 Payment Package System Test</h1>
+
+        <!-- Filters -->
+        <div class="filters">
+            <div class="filter-group">
+                <label>Category:</label>
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="starter">Starter</option>
+                    <option value="popular">Popular</option>
+                    <option value="premium">Premium</option>
+                    <option value="mega">Mega</option>
+                    <option value="special">Special</option>
+                    <option value="limited">Limited</option>
+                </select>
+
+                <label>Type:</label>
+                <select id="typeFilter">
+                    <option value="">All Types</option>
+                    <option value="coins">Coins</option>
+                    <option value="gems">Gems</option>
+                    <option value="bundle">Bundle</option>
+                    <option value="vip">VIP</option>
+                    <option value="subscription">Subscription</option>
+                </select>
+
+                <label>Popular Only:</label>
+                <input type="checkbox" id="popularFilter">
+
+                <button onclick="loadPackages()">Apply Filters</button>
+                <button onclick="clearFilters()">Clear</button>
+            </div>
+        </div>
+
+        <!-- Package Stats -->
+        <div id="packageStats" class="stats-grid"></div>
+
+        <!-- Payment Packages -->
+        <h2>📦 Available Payment Packages</h2>
+        <div id="packagesContainer" class="loading">Loading payment packages...</div>
+
+        <!-- Popular Packages -->
+        <h2>🌟 Popular Packages</h2>
+        <div id="popularPackagesContainer" class="loading">Loading popular packages...</div>
+    </div>
+
+    <!-- Test Section -->
+    <div class="container test-section">
+        <h2>🧪 Payment System Testing</h2>
+
+        <div class="form-group">
+            <label>Test User ID:</label>
+            <input type="number" id="testUserId" value="1" min="1">
+        </div>
+
+        <div class="form-group">
+            <label>Test User Email:</label>
+            <input type="email" id="testUserEmail" value="test@example.com">
+        </div>
+
+        <button onclick="testUserPurchases()">Load User Purchase History</button>
+        <button onclick="testSystemAnalytics()">Load System Analytics</button>
+
+        <div id="testResults" class="result"></div>
+
+        <!-- User Purchase History -->
+        <h3>📋 User Purchase History</h3>
+        <div id="userPurchasesContainer" class="loading" style="display: none;">Loading purchase history...</div>
+
+        <!-- System Analytics -->
+        <h3>📊 System Analytics</h3>
+        <div id="analyticsContainer" class="loading" style="display: none;">Loading analytics...</div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="purchaseModal" class="purchase-modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePurchaseModal()">&times;</span>
+            <h2>💳 Purchase Package</h2>
+
+            <div id="selectedPackageInfo"></div>
+
+            <div class="form-group">
+                <label>User ID:</label>
+                <input type="number" id="purchaseUserId" value="1" min="1">
+            </div>
+
+            <div class="form-group">
+                <label>User Email:</label>
+                <input type="email" id="purchaseUserEmail" value="test@example.com">
+            </div>
+
+            <div class="form-group">
+                <label>Payment Method:</label>
+                <select id="paymentMethod">
+                    <option value="credit_card">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="google_pay">Google Pay</option>
+                    <option value="apple_pay">Apple Pay</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Payment Provider:</label>
+                <select id="paymentProvider">
+                    <option value="stripe">Stripe</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="google">Google</option>
+                    <option value="apple">Apple</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Platform:</label>
+                <select id="platform">
+                    <option value="web">Web</option>
+                    <option value="android">Android</option>
+                    <option value="ios">iOS</option>
+                    <option value="desktop">Desktop</option>
+                </select>
+            </div>
+
+            <button onclick="simulatePurchase()" style="width: 100%; padding: 15px; font-size: 16px;">
+                🚀 Simulate Purchase
+            </button>
+
+            <div id="purchaseResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:9000/api';
+        let currentPackages = [];
+        let selectedPackage = null;
+
+        // Load payment packages
+        async function loadPackages() {
+            try {
+                showLoading('packagesContainer', 'Loading payment packages...');
+
+                const params = new URLSearchParams();
+                const category = document.getElementById('categoryFilter').value;
+                const type = document.getElementById('typeFilter').value;
+                const popularOnly = document.getElementById('popularFilter').checked;
+
+                if (category) params.append('category', category);
+                if (type) params.append('package_type', type);
+                if (popularOnly) params.append('is_popular', 'true');
+
+                const response = await fetch(`${API_BASE}/payments/packages?${params}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    currentPackages = result.data;
+                    displayPackages(currentPackages, 'packagesContainer');
+                    updatePackageStats();
+                } else {
+                    showError('packagesContainer', 'Failed to load packages: ' + result.message);
+                }
+            } catch (error) {
+                showError('packagesContainer', 'Network error: ' + error.message);
+            }
+        }
+
+        // Load popular packages
+        async function loadPopularPackages() {
+            try {
+                showLoading('popularPackagesContainer', 'Loading popular packages...');
+
+                const response = await fetch(`${API_BASE}/payments/packages/popular`);
+                const result = await response.json();
+
+                if (result.success) {
+                    displayPackages(result.data, 'popularPackagesContainer');
+                } else {
+                    showError('popularPackagesContainer', 'Failed to load popular packages: ' + result.message);
+                }
+            } catch (error) {
+                showError('popularPackagesContainer', 'Network error: ' + error.message);
+            }
+        }
+
+        // Display packages
+        function displayPackages(packages, containerId) {
+            const container = document.getElementById(containerId);
+
+            if (packages.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">No packages found.</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="packages-grid">
+                    ${packages.map(pkg => createPackageCard(pkg)).join('')}
+                </div>
+            `;
+        }
+
+        // Create package card HTML
+        function createPackageCard(pkg) {
+            const rewards = pkg.rewards || {};
+            const rewardItems = Object.entries(rewards)
+                .map(([key, value]) => `
+                    <div class="reward-item">
+                        <span>${formatRewardName(key)}:</span>
+                        <strong>${formatRewardValue(value)}</strong>
+                    </div>
+                `).join('');
+
+            return `
+                <div class="package-card ${pkg.is_popular ? 'popular' : ''}" onclick="selectPackage('${pkg.package_id}')">
+                    <div class="package-title">${pkg.name}</div>
+                    <div class="package-price">$${pkg.price_usd}</div>
+                    <div class="package-description">${pkg.description || 'No description available'}</div>
+                    
+                    <div class="package-rewards">
+                        <strong>🎁 Rewards:</strong>
+                        ${rewardItems}
+                        ${pkg.bonus_percentage ? `<div class="reward-item"><span>Bonus:</span><strong>+${pkg.bonus_percentage}%</strong></div>` : ''}
+                    </div>
+                    
+                    <div class="package-meta">
+                        <span class="category-tag ${pkg.category}">${pkg.category.toUpperCase()}</span>
+                        <span>Type: ${pkg.package_type}</span>
+                    </div>
+                    
+                    <button class="purchase-btn" onclick="event.stopPropagation(); openPurchaseModal('${pkg.package_id}')">
+                        💳 Purchase Now
+                    </button>
+                </div>
+            `;
+        }
+
+        // Format reward names and values
+        function formatRewardName(key) {
+            return key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        function formatRewardValue(value) {
+            if (typeof value === 'number') {
+                return value.toLocaleString();
+            }
+            return value;
+        }
+
+        // Package selection
+        function selectPackage(packageId) {
+            selectedPackage = currentPackages.find(pkg => pkg.package_id === packageId);
+            if (selectedPackage) {
+                console.log('Selected package:', selectedPackage);
+            }
+        }
+
+        // Open purchase modal
+        function openPurchaseModal(packageId) {
+            const pkg = currentPackages.find(p => p.package_id === packageId);
+            if (!pkg) return;
+
+            selectedPackage = pkg;
+
+            document.getElementById('selectedPackageInfo').innerHTML = `
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3>${pkg.name}</h3>
+                    <p><strong>Price:</strong> $${pkg.price_usd}</p>
+                    <p><strong>Description:</strong> ${pkg.description || 'No description'}</p>
+                </div>
+            `;
+
+            document.getElementById('purchaseModal').style.display = 'block';
+        }
+
+        // Close purchase modal
+        function closePurchaseModal() {
+            document.getElementById('purchaseModal').style.display = 'none';
+            document.getElementById('purchaseResult').style.display = 'none';
+        }
+
+        // Simulate purchase
+        async function simulatePurchase() {
+            if (!selectedPackage) return;
+
+            try {
+                const purchaseData = {
+                    package_id: selectedPackage.package_id,
+                    user_id: parseInt(document.getElementById('purchaseUserId').value),
+                    user_email: document.getElementById('purchaseUserEmail').value,
+                    payment_method: document.getElementById('paymentMethod').value,
+                    payment_provider: document.getElementById('paymentProvider').value,
+                    platform: document.getElementById('platform').value,
+                    country_code: 'US'
+                };
+
+                showResult('purchaseResult', 'Processing payment...', 'success');
+
+                // Initialize payment
+                const initResponse = await fetch(`${API_BASE}/payments/initialize`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(purchaseData)
+                });
+
+                const initResult = await initResponse.json();
+
+                if (!initResult.success) {
+                    throw new Error(initResult.message);
+                }
+
+                const transactionId = initResult.data.transaction_id;
+
+                // Simulate payment completion
+                setTimeout(async () => {
+                    try {
+                        const completeResponse = await fetch(`${API_BASE}/payments/complete/${transactionId}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                provider_transaction_id: 'sim_' + Date.now()
+                            })
+                        });
+
+                        const completeResult = await completeResponse.json();
+
+                        if (completeResult.success) {
+                            showResult('purchaseResult',
+                                `✅ Purchase completed successfully!\\n` +
+                                `Transaction ID: ${transactionId}\\n` +
+                                `Rewards delivered: ${JSON.stringify(completeResult.data.rewards)}`,
+                                'success'
+                            );
+                        } else {
+                            throw new Error(completeResult.message);
+                        }
+                    } catch (error) {
+                        showResult('purchaseResult', `❌ Payment completion failed: ${error.message}`, 'error');
+                    }
+                }, 2000);
+
+            } catch (error) {
+                showResult('purchaseResult', `❌ Payment failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Test user purchases
+        async function testUserPurchases() {
+            const userId = document.getElementById('testUserId').value;
+            try {
+                showLoading('userPurchasesContainer', 'Loading user purchase history...');
+                document.getElementById('userPurchasesContainer').style.display = 'block';
+
+                const response = await fetch(`${API_BASE}/payments/users/${userId}/purchases`);
+                const result = await response.json();
+
+                if (result.success) {
+                    displayUserPurchases(result.data);
+                } else {
+                    showError('userPurchasesContainer', 'Failed to load purchase history: ' + result.message);
+                }
+            } catch (error) {
+                showError('userPurchasesContainer', 'Network error: ' + error.message);
+            }
+        }
+
+        // Display user purchases
+        function displayUserPurchases(data) {
+            const container = document.getElementById('userPurchasesContainer');
+            const { transactions, summary } = data;
+
+            container.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">${summary.total_purchases}</div>
+                        <div class="stat-label">Total Purchases</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$${summary.total_spent || 0}</div>
+                        <div class="stat-label">Total Spent</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${summary.successful_purchases}</div>
+                        <div class="stat-label">Successful</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${summary.unique_packages_purchased}</div>
+                        <div class="stat-label">Unique Packages</div>
+                    </div>
+                </div>
+                
+                <h4>Recent Transactions:</h4>
+                <div class="transaction-list">
+                    ${transactions.map(tx => `
+                        <div class="transaction-item">
+                            <div>
+                                <strong>${tx.package_name || tx.package_id}</strong><br>
+                                <small>${new Date(tx.created_at).toLocaleString()}</small>
+                            </div>
+                            <div>
+                                <div>$${tx.amount}</div>
+                                <span class="transaction-status status-${tx.status}">${tx.status.toUpperCase()}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Test system analytics
+        async function testSystemAnalytics() {
+            try {
+                showLoading('analyticsContainer', 'Loading system analytics...');
+                document.getElementById('analyticsContainer').style.display = 'block';
+
+                // Note: This would require admin authentication
+                showResult('testResults', 'Analytics test requires admin authentication. Use admin panel for full analytics.', 'error');
+                document.getElementById('analyticsContainer').innerHTML = '<p>Analytics requires admin authentication.</p>';
+
+            } catch (error) {
+                showError('analyticsContainer', 'Network error: ' + error.message);
+            }
+        }
+
+        // Update package statistics
+        function updatePackageStats() {
+            const stats = {
+                total: currentPackages.length,
+                popular: currentPackages.filter(p => p.is_popular).length,
+                avgPrice: currentPackages.reduce((sum, p) => sum + p.price_usd, 0) / currentPackages.length || 0,
+                categories: new Set(currentPackages.map(p => p.category)).size
+            };
+
+            document.getElementById('packageStats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${stats.total}</div>
+                    <div class="stat-label">Total Packages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.popular}</div>
+                    <div class="stat-label">Popular Packages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$${stats.avgPrice.toFixed(2)}</div>
+                    <div class="stat-label">Average Price</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.categories}</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+            `;
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('popularFilter').checked = false;
+            loadPackages();
+        }
+
+        // Utility functions
+        function showLoading(containerId, message) {
+            document.getElementById(containerId).innerHTML = `<div class="loading">${message}</div>`;
+        }
+
+        function showError(containerId, message) {
+            document.getElementById(containerId).innerHTML = `<div style="color: red; text-align: center; padding: 20px;">${message}</div>`;
+        }
+
+        function showResult(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `result ${type}`;
+            element.style.display = 'block';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPackages();
+            loadPopularPackages();
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('purchaseModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

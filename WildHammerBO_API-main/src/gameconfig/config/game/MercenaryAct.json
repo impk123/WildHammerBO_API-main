@@ -1,0 +1,67 @@
+{
+  "1": {
+    "name": "หัวหน้าคลังอาวุธ",
+    "id": 1001,
+    "fid": 61001,
+    "boxlv": 0,
+    "shipnum": 0,
+    "arena_winnum": 0,
+    "elitelv": 0,
+    "damage": 0
+  },
+  "2": {
+    "name": "นักดาบจิ๋ว",
+    "id": 2001,
+    "fid": 62001,
+    "boxlv": 0,
+    "shipnum": 30,
+    "arena_winnum": 0,
+    "elitelv": 0,
+    "damage": 0,
+    "shuoming": "ทำลายเรือโจรสลัด 30 ลำในการต่อสู้ชิงสมบัติ"
+  },
+  "3": {
+    "name": "พี่ชายหลังเหล็ก",
+    "id": 3001,
+    "fid": 63001,
+    "boxlv": 9,
+    "shipnum": 0,
+    "arena_winnum": 0,
+    "elitelv": 0,
+    "damage": 0,
+    "shuoming": "โรงตีเหล็กถึงเลเวล 9"
+  },
+  "4": {
+    "name": "ความฝันของนางฟ้า",
+    "id": 4001,
+    "fid": 64001,
+    "boxlv": 0,
+    "shipnum": 0,
+    "arena_winnum": 0,
+    "elitelv": 0,
+    "damage": 500000,
+    "shuoming": "สร้างความเสียหาย 500,000 หน่วยแก่-มังกรยักษ์ในห้วงเหวลึกในการต่อสู้ครั้งเดียว"
+  },
+  "5": {
+    "name": "พลทหาร",
+    "id": 5001,
+    "fid": 65001,
+    "boxlv": 0,
+    "shipnum": 0,
+    "arena_winnum": 100,
+    "elitelv": 0,
+    "damage": 0,
+    "shuoming": "ชนะในสนามประลอง 100 ครั้ง"
+  },
+  "6": {
+    "name": "ข้าไม่กินคน",
+    "id": 6001,
+    "fid": 66001,
+    "boxlv": 0,
+    "shipnum": 0,
+    "arena_winnum": 0,
+    "elitelv": 10051,
+    "damage": 1,
+    "shuoming": "ผ่านด่านท้าทายชั้นยอด 50 ชั้น"
+  }
+}

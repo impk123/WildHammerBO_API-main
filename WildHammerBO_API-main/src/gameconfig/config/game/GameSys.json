@@ -1,0 +1,92 @@
+{
+    "1001": {
+        "strKey": "gamelevels",
+        "name": "ด่าน",
+        "open_rolelevel": 1
+    },
+    "1002": {
+        "strKey": "equip",
+        "name": "อุปกรณ์",
+        "open_rolelevel": 1
+    },
+    "1003": {
+        "strKey": "skill",
+        "name": "สกิล",
+        "open_rolelevel": 1
+    },
+    "1004": {
+        "strKey": "box",
+        "name": "กล่องสมบัติ",
+        "open_rolelevel": 1
+    },
+    "1005": {
+        "strKey": "email",
+        "name": "จดหมาย",
+        "open_rolelevel": 1
+    },
+    "1006": {
+        "strKey": "timeaward",
+        "name": "AFK",
+        "open_rolelevel": 2
+    },
+    "1007": {
+        "strKey": "elitelevels",
+        "name": "ท้าทายชั้นยอด",
+        "open_rolelevel": 3
+    },
+    "1008": {
+        "strKey": "task_main",
+        "name": "ภารกิจหลัก",
+        "open_rolelevel": 1
+    },
+    "1009": {
+        "strKey": "task_daily",
+        "name": "ภารกิจรายวัน",
+        "open_rolelevel": 2
+    },
+    "1010": {
+        "strKey": "welfare_daily",
+        "name": "ของขวัญรายวัน",
+        "open_rolelevel": 2
+    },
+    "1011": {
+        "strKey": "welfare_level",
+        "name": "รางวัลเลเวล",
+        "open_rolelevel": 2
+    },
+    "1012": {
+        "strKey": "welfare_paid_days",
+        "name": "ของขวัญสะสมรายวัน",
+        "open_rolelevel": 2
+    },
+    "1013": {
+        "strKey": "recharge_month_card",
+        "name": "บัตรรายเดือน",
+        "open_rolelevel": 2
+    },
+    "1014": {
+        "strKey": "recharge_level_fund",
+        "name": "กองทุนเลเวล",
+        "open_rolelevel": 2
+    },
+    "1015": {
+        "strKey": "recharge_ebox_fund",
+        "name": "กองทุนตีบวก",
+        "open_rolelevel": 2
+    },
+    "1016": {
+        "strKey": "diamond_shop",
+        "name": "ร้านค้าเพชร",
+        "open_rolelevel": 1
+    },
+    "1017": {
+        "strKey": "daily_welfare",
+        "name": "สวัสดิการรายวัน",
+        "open_rolelevel": 1
+    },
+    "1018": {
+        "strKey": "recharge_daily_award",
+        "name": "แพ็ครายวัน",
+        "open_rolelevel": 1
+    }
+}

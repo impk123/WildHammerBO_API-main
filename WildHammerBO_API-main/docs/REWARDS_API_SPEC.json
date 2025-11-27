@@ -1,0 +1,419 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Rewards System API",
+    "description": "API สำหรับระบบแลกรางวัล (Rewards System) ที่ใช้ JWT Token Authentication",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Backend Team",
+      "email": "backend@wildhammer.online"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3500/api",
+      "description": "Development server"
+    },
+    {
+      "url": "https://api.wildhammer.online/api",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/rewards/active": {
+      "get": {
+        "summary": "Get Active Rewards",
+        "description": "ดูรายการรางวัลที่เปิดใช้งาน",
+        "tags": ["Rewards"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Reward"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rewards/{id}": {
+      "get": {
+        "summary": "Get Reward by ID",
+        "description": "ดูรายละเอียดรางวัล",
+        "tags": ["Rewards"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID ของรางวัล"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Reward"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reward not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rewards/redeem": {
+      "post": {
+        "summary": "Redeem Reward",
+        "description": "แลกรางวัลด้วย JWT token",
+        "tags": ["Redemption"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RedeemRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Redemption successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Reward redeemed successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/RedeemResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rewards/redemptions/user": {
+      "get": {
+        "summary": "Get User Redemption History",
+        "description": "ดูประวัติการแลกรางวัลของผู้ใช้",
+        "tags": ["Redemption"],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "JWT Token จากเกม"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Redemption"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Reward": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Gaming Mouse RGB"
+          },
+          "image_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/images/gaming-mouse.jpg"
+          },
+          "token_cost": {
+            "type": "integer",
+            "example": 1000,
+            "description": "จำนวน token ที่ใช้แลก"
+          },
+          "description": {
+            "type": "string",
+            "example": "High-quality gaming mouse with RGB lighting"
+          },
+          "is_active": {
+            "type": "boolean",
+            "example": true
+          },
+          "stock_quantity": {
+            "type": "integer",
+            "example": 50,
+            "description": "-1 = unlimited"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z"
+          }
+        }
+      },
+      "RedeemRequest": {
+        "type": "object",
+        "required": ["reward_id", "shipping_address", "email", "token"],
+        "properties": {
+          "reward_id": {
+            "type": "integer",
+            "example": 1,
+            "description": "ID ของรางวัลที่ต้องการแลก"
+          },
+          "shipping_address": {
+            "type": "string",
+            "example": "123 Main Street, Bangkok, Thailand 10110",
+            "description": "ที่อยู่จัดส่ง"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "user@example.com",
+            "description": "อีเมลล์สำหรับติดต่อ"
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "description": "JWT Token จากเกม"
+          }
+        }
+      },
+      "RedeemResponse": {
+        "type": "object",
+        "properties": {
+          "redemption_id": {
+            "type": "integer",
+            "example": 123
+          },
+          "new_balance": {
+            "type": "integer",
+            "example": 500,
+            "description": "ยอด realMoney หลังแลก"
+          },
+          "reward_name": {
+            "type": "string",
+            "example": "Gaming Mouse RGB"
+          },
+          "user_id": {
+            "type": "string",
+            "example": "123"
+          },
+          "server_id": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "Redemption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 123
+          },
+          "reward_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "user_id": {
+            "type": "string",
+            "example": "123"
+          },
+          "server_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "token_cost": {
+            "type": "integer",
+            "example": 1000
+          },
+          "real_money_before": {
+            "type": "integer",
+            "example": 1500
+          },
+          "real_money_after": {
+            "type": "integer",
+            "example": 500
+          },
+          "shipping_address": {
+            "type": "string",
+            "example": "123 Main Street, Bangkok, Thailand 10110"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "user@example.com"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "processing", "shipped", "delivered", "cancelled"],
+            "example": "pending"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "reward_name": {
+            "type": "string",
+            "example": "Gaming Mouse RGB"
+          },
+          "reward_image": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/images/gaming-mouse.jpg"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Error description"
+          },
+          "error": {
+            "type": "string",
+            "example": "Detailed error message (development only)"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Rewards",
+      "description": "Operations related to rewards"
+    },
+    {
+      "name": "Redemption",
+      "description": "Operations related to reward redemption"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+    "1": {
+        "name": "เด็กชาย",
+        "model": "boy",
+        "model_scale": 5000,
+        "attack_delay": 800,
+        "run_anim_factor": 50
+    },
+    "2": {
+        "name": "โครงกระดูก",
+        "model": "boy2",
+        "model_scale": 3000,
+        "attack_delay": 500,
+        "run_anim_factor": 50
+    }
+}

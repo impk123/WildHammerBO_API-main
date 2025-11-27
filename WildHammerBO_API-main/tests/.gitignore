@@ -1,0 +1,16 @@
+# Test output files
+*.log
+test-results/
+coverage/
+
+# Temporary test data
+temp-*.json
+test-backup-*.sql
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

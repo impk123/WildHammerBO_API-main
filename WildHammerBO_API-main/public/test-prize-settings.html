@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prize Settings API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .response {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+        <h1>🏆 Prize Settings API Test</h1>
+        <p><strong>อัพเดทล่าสุด:</strong> เพิ่มการคำนวณ addon_prize อัตโนมัติเมื่อใช้ increase-total-buytoken</p>
+    
+    <div class="container">
+        <h2>1. Update All Prize Settings (ID=1)</h2>
+        <p>Update all values in the prize_setting table where id=1</p>
+        
+        <div class="form-group">
+            <label for="initial_prize">Initial Prize:</label>
+            <input type="number" id="initial_prize" step="0.01" value="100.00">
+        </div>
+        
+        <div class="form-group">
+            <label for="tota_buytoken">Total Buy Token:</label>
+            <input type="number" id="tota_buytoken" step="0.01" value="500.00">
+        </div>
+        
+        <div class="form-group">
+            <label for="percent_addon">Percent Addon:</label>
+            <input type="number" id="percent_addon" step="0.01" value="10.00">
+        </div>
+        
+        <div class="form-group">
+            <label for="addon_prize">Addon Prize:</label>
+            <input type="number" id="addon_prize" step="0.01" value="50.00">
+        </div>
+        
+        <button onclick="updateAllSettings()">Update All Settings</button>
+        <div id="updateResponse" class="response" style="display: none;"></div>
+    </div>
+    
+    <div class="container">
+        <h2>2. Increase Total Buy Token</h2>
+        <p><strong>⚠️ พิเศษ:</strong> เมื่อเพิ่ม total_buytoken ระบบจะคำนวณ addon_prize ใหม่โดยอัตโนมัติ<br>
+        สูตร: addon_prize = addon_prize * ((percent_addon/100) * increase_amount)</p>
+        
+        <div class="form-group">
+            <label for="increase_amount">Increase Amount:</label>
+            <input type="number" id="increase_amount" step="0.01" value="100.00">
+        </div>
+        
+        <button onclick="increaseTotalBuytoken()">Increase Total Buy Token</button>
+        <div id="increaseResponse" class="response" style="display: none;"></div>
+    </div>
+    
+    <div class="container">
+        <h2>3. Get Current Prize Settings</h2>
+        <p>View the current prize settings</p>
+        
+        <button onclick="getPrizeSettings()">Get Prize Settings</button>
+        <div id="getResponse" class="response" style="display: none;"></div>
+    </div>
+
+    <script>
+        const API_BASE = '/api/prizeSettings';
+        
+        // Get auth token from localStorage (you'll need to login first)
+        function getAuthToken() {
+            return localStorage.getItem('authToken') || prompt('Please enter your auth token:');
+        }
+        
+        function showResponse(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `response ${isError ? 'error' : 'success'}`;
+            element.textContent = JSON.stringify(data, null, 2);
+        }
+        
+        async function updateAllSettings() {
+            try {
+                const data = {
+                    initial_prize: parseFloat(document.getElementById('initial_prize').value),
+                    tota_buytoken: parseFloat(document.getElementById('tota_buytoken').value),
+                    percent_addon: parseFloat(document.getElementById('percent_addon').value),
+                    addon_prize: parseFloat(document.getElementById('addon_prize').value)
+                };
+                
+                const response = await fetch(`${API_BASE}/update`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                showResponse('updateResponse', result, !response.ok);
+            } catch (error) {
+                showResponse('updateResponse', { error: error.message }, true);
+            }
+        }
+        
+        async function increaseTotalBuytoken() {
+            try {
+                const data = {
+                    increase_amount: parseFloat(document.getElementById('increase_amount').value)
+                };
+                
+                const response = await fetch(`${API_BASE}/increase-total-buytoken`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                showResponse('increaseResponse', result, !response.ok);
+            } catch (error) {
+                showResponse('increaseResponse', { error: error.message }, true);
+            }
+        }
+        
+        async function getPrizeSettings() {
+            try {
+                const response = await fetch(`${API_BASE}/1`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    }
+                });
+                
+                const result = await response.json();
+                showResponse('getResponse', result, !response.ok);
+            } catch (error) {
+                showResponse('getResponse', { error: error.message }, true);
+            }
+        }
+    </script>
+</body>
+</html>
